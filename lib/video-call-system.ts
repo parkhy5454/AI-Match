@@ -511,7 +511,7 @@ export async function getCallStatisticsSummary(callId: string): Promise<{
 /**
  * Connect to an ongoing call
  */
-export async function connectCall(callId: string, userId: string): Promise<VideoCall | null> {
+export async function connectCall(callId: string, userId: string): Promise<CallSession | null> {
   return connectToCall(callId, userId);
 }
 
