@@ -48,7 +48,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     const callId = params.id
-    const recording = await startRecording(callId, userId)
+    const recording = await startRecording(callId)
 
     logger.info('통화 녹음 시작', {
       callId,
