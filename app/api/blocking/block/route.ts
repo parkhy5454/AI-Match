@@ -64,9 +64,7 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('사용자 차단 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 차단 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -131,9 +129,7 @@ export async function DELETE(request: NextRequest) {
       message: '차단이 해제되었습니다',
     })
   } catch (error) {
-    logger.error('사용자 차단 해제 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 차단 해제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { error: '차단 해제 중 오류가 발생했습니다' },
