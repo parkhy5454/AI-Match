@@ -67,7 +67,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    await suspendUser(targetUserId, body.reason, durationHours)
+    await suspendUser(targetUserId, durationHours, body.reason)
 
     // 감사 로그
     await db.execute(`
