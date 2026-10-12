@@ -51,10 +51,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '이미지가 삭제되었습니다',
     })
   } catch (error) {
-    logger.error('프로필 이미지 삭제 API 오류', {
-      imageId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('프로필 이미지 삭제 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

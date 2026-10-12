@@ -71,9 +71,7 @@ export async function POST(request: NextRequest) {
       message: '통화를 시작했습니다',
     })
   } catch (error) {
-    logger.error('통화 시작 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('통화 시작 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

@@ -127,9 +127,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('신고 목록 조회 API 오류 (관리자)', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('신고 목록 조회 API 오류 (관리자)', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { error: '목록 조회 중 오류가 발생했습니다' },
@@ -196,9 +194,7 @@ export async function PUT(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('신고 상태 업데이트 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('신고 상태 업데이트 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { error: '상태 업데이트 중 오류가 발생했습니다' },

@@ -64,10 +64,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       data: stats,
     })
   } catch (error) {
-    logger.error('통화 통계 조회 API 오류', {
-      callId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('통화 통계 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
@@ -154,10 +151,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '통화 통계가 기록되었습니다',
     })
   } catch (error) {
-    logger.error('통화 통계 기록 API 오류', {
-      callId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('통화 통계 기록 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

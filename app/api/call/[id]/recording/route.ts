@@ -62,10 +62,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '통화 녹음이 시작되었습니다',
     })
   } catch (error) {
-    logger.error('통화 녹음 시작 API 오류', {
-      callId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('통화 녹음 시작 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
@@ -123,10 +120,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '통화 녹음이 종료되었습니다',
     })
   } catch (error) {
-    logger.error('통화 녹음 종료 API 오류', {
-      callId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('통화 녹음 종료 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

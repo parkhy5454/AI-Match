@@ -54,9 +54,7 @@ export async function POST(request: NextRequest) {
       data: result,
     })
   } catch (error) {
-    logger.error('결제 확인 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('결제 확인 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { success: false, error: '결제 확인에 실패했습니다' },

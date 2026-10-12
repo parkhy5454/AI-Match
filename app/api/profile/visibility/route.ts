@@ -53,9 +53,7 @@ export async function PUT(request: NextRequest) {
       message: `프로필이 ${body.isPublic ? '공개' : '비공개'}로 설정되었습니다`
     })
   } catch (error) {
-    logger.error('프로필 공개 설정 변경 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
+    logger.error('프로필 공개 설정 변경 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

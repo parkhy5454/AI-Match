@@ -47,9 +47,7 @@ export async function GET(request: NextRequest) {
           : '프로필이 완성되었습니다',
     })
   } catch (error) {
-    logger.error('프로필 완성도 조회 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('프로필 완성도 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

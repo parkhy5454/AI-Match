@@ -74,9 +74,7 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('사용자 신고 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 신고 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     const statusCode =
       error instanceof Error && error.message.includes('자신')
@@ -152,9 +150,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('신고 목록 조회 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('신고 목록 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { error: '목록 조회 중 오류가 발생했습니다' },

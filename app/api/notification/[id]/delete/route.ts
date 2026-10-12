@@ -51,10 +51,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '알림이 삭제되었습니다',
     })
   } catch (error) {
-    logger.error('알림 삭제 API 오류', {
-      notificationId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('알림 삭제 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { success: false, error: '알림 삭제에 실패했습니다' },

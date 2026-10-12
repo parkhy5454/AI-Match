@@ -119,9 +119,7 @@ export async function GET(request: NextRequest) {
       message: '매칭 목록 조회 성공',
     })
   } catch (error) {
-    logger.error('매칭 목록 조회 실패', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('매칭 목록 조회 실패', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

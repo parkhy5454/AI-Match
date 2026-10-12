@@ -102,9 +102,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('사용자 검색 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 검색 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { error: '검색 중 오류가 발생했습니다' },
@@ -164,9 +162,7 @@ export async function POST(request: NextRequest) {
       message: '프로필 조회가 기록되었습니다',
     })
   } catch (error) {
-    logger.error('프로필 조회 기록 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('프로필 조회 기록 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { error: '조회 기록 저장 중 오류가 발생했습니다' },

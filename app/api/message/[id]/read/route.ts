@@ -52,10 +52,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '메시지를 읽음으로 표시했습니다',
     })
   } catch (error) {
-    logger.error('메시지 읽음 처리 API 오류', {
-      messageId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('메시지 읽음 처리 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
@@ -104,10 +101,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '모든 메시지를 읽음으로 표시했습니다',
     })
   } catch (error) {
-    logger.error('대화 읽음 처리 API 오류', {
-      conversationId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('대화 읽음 처리 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

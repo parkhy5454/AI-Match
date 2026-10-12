@@ -98,9 +98,7 @@ export async function POST(request: NextRequest) {
         : '사진 검증이 불가능합니다',
     })
   } catch (error) {
-    logger.error('Duplicate check endpoint error', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('Duplicate check endpoint error', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

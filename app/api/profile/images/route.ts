@@ -51,9 +51,7 @@ export async function GET(request: NextRequest) {
       data: images,
     })
   } catch (error) {
-    logger.error('프로필 이미지 조회 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('프로필 이미지 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       { success: false, error: '이미지 조회에 실패했습니다' },
@@ -116,9 +114,7 @@ export async function POST(request: NextRequest) {
       message: '이미지가 업로드되었습니다',
     })
   } catch (error) {
-    logger.error('프로필 이미지 업로드 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('프로필 이미지 업로드 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

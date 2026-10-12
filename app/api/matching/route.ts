@@ -59,9 +59,7 @@ export async function POST(request: NextRequest) {
       message: '좋아요가 남겨졌습니다'
     })
   } catch (error) {
-    logger.error('좋아요 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
+    logger.error('좋아요 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
@@ -116,9 +114,7 @@ export async function DELETE(request: NextRequest) {
       message: '좋아요가 취소되었습니다'
     })
   } catch (error) {
-    logger.error('좋아요 취소 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
+    logger.error('좋아요 취소 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

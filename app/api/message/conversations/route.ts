@@ -49,9 +49,7 @@ export async function GET(request: NextRequest) {
       data: conversations,
     })
   } catch (error) {
-    logger.error('대화 목록 조회 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('대화 목록 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

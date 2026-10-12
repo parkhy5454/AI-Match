@@ -48,9 +48,7 @@ export async function GET(request: NextRequest) {
       }
     })
   } catch (error) {
-    logger.error('추천 사용자 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
+    logger.error('추천 사용자 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

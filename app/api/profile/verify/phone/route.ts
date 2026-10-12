@@ -96,9 +96,7 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('휴대폰 인증 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('휴대폰 인증 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

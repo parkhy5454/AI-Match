@@ -108,9 +108,7 @@ export async function POST(request: NextRequest) {
         : '사진 검증 실패',
     })
   } catch (error) {
-    logger.error('Photo verification endpoint error', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('Photo verification endpoint error', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
@@ -194,9 +192,7 @@ export async function GET(request: NextRequest) {
       message: '검증 기록 조회 성공',
     })
   } catch (error) {
-    logger.error('Photo verification history endpoint error', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('Photo verification history endpoint error', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {

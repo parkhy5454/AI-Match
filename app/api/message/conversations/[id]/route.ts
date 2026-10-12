@@ -65,10 +65,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       },
     })
   } catch (error) {
-    logger.error('대화 메시지 조회 API 오류', {
-      conversationId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('대화 메시지 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
 
     return NextResponse.json(
       {
