@@ -1,0 +1,64 @@
+services:
+  - type: web
+    name: ai-match
+    env: node
+    plan: standard
+    buildCommand: npm install --legacy-peer-deps --ignore-scripts && npm run build && npx prisma migrate deploy --skip-generate
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: NEXTAUTH_SECRET
+        sync: false
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: EMAIL_SERVICE
+        value: gmail
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        value: noreply@ai-match.com
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_S3_BUCKET
+        sync: false
+      - key: AWS_S3_REGION
+        value: us-east-1
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: LOG_LEVEL
+        value: info
+
+  - type: pserv
+    name: ai-match-postgres
+    env: postgres
+    plan: standard
+    ipAllowList: []
+    envVars:
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_DB
+        value: ai_match
+      - key: POSTGRES_PASSWORD
+        sync: false
+
+  - type: redis
+    name: ai-match-redis
+    plan: standard
+    ipAllowList: []

@@ -1,0 +1,56 @@
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 28px;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.header p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.value {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.subtext {
+  font-size: 12px;
+  opacity: 0.8;
+}

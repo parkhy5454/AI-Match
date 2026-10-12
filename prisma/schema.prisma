@@ -1,0 +1,647 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  username  String     @unique
+  email     String     @unique
+  password  String
+  age       Int
+  gender    String?
+  region    String
+  mbti      String
+  bio       String?
+  profileImage String?
+  points    Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // 민감한 정보 (암호화됨)
+  phoneNumber String?    // 암호화된 전화번호
+  address String?        // 암호화된 주소
+  birthDate String?      // 암호화된 생년월일 (ISO 8601 format)
+
+  // 설정 필드
+  notificationsEnabled Boolean @default(true)
+  isPrivate Boolean @default(false)
+
+  // 보안/검증 필드
+  emailVerified Boolean @default(false)
+  phoneVerified Boolean @default(false)
+  photoVerified Boolean @default(false)
+  isActive Boolean @default(true)
+  accountStatus String @default("active") // active, suspended, blocked
+  suspendedUntil DateTime?
+  reportCount Int @default(0)
+
+  // Relations
+  sentLikes Like[] @relation("FromUser")
+  receivedLikes Like[] @relation("ToUser")
+  matchesAsUserA Match[] @relation("MatchUserA")
+  matchesAsUserB Match[] @relation("MatchUserB")
+  sentMessages Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageRecipient")
+  sentReports Report[] @relation("Reporter")
+  receivedReports Report[] @relation("ReportedUser")
+  photoVerifications PhotoVerification[]
+  notifications Notification[]
+  blockedUsers BlockedUser[] @relation("Blocker")
+  blockedByUsers BlockedUser[] @relation("Blocked")
+  referralCode ReferralCode?
+  referrer User? @relation("Referral", fields: [referrerId], references: [id])
+  referrerId String?
+  referred User[] @relation("Referral")
+  sessions Session[]
+  sentGifts Gift[] @relation("GiftSender")
+  receivedGifts Gift[] @relation("GiftRecipient")
+  pushTokens PushToken[] @relation("PushTokens")
+  location UserLocation? @relation("UserLocation")
+  subscriptions Subscription[] @relation("Subscriptions")
+  analytics UserAnalytics[]
+  chatRoomMembers ChatRoomMember[] @relation("ChatRoomMembers")
+  payments Payment[] @relation("Payments")
+  pointHistory PointHistory[] @relation("PointHistory")
+  badges UserBadge[] @relation("UserBadges")
+  photos UserPhoto[] @relation("UserPhotos")
+  searchPreference SearchPreference? @relation("SearchPreference")
+  outgoingCalls CallSession[] @relation("OutgoingCalls")
+  incomingCalls CallSession[] @relation("IncomingCalls")
+  createdEvents Event[] @relation("CreatedEvents")
+  eventParticipants EventParticipant[] @relation("EventParticipants")
+  fileUploads FileUpload[] @relation("FileUploads")
+}
+
+// 세션 관리
+model Session {
+  id        String     @id @default(cuid())
+  userId    String
+  token     String     @unique
+  userAgent String?
+  ipAddress String?
+  isActive  Boolean    @default(true)
+  expiresAt DateTime
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Like {
+  id        String     @id @default(cuid())
+  fromUserId String
+  toUserId  String
+  liked     Boolean    @default(false)
+  createdAt DateTime   @default(now())
+
+  fromUser User @relation("FromUser", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser User @relation("ToUser", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+}
+
+model Match {
+  id            String     @id @default(cuid())
+  userAId       String
+  userBId       String
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  userA User @relation("MatchUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("MatchUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  @@unique([userAId, userBId])
+  @@index([userAId])
+  @@index([userBId])
+  @@index([createdAt])
+}
+
+model Message {
+  id           String     @id @default(cuid())
+  senderId     String
+  recipientId  String
+  content      String
+  isRead       Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+
+  sender    User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([createdAt])
+}
+
+model ReferralCode {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  code      String     @unique
+  points    Int        @default(1000)
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// OTP 인증
+model OtpCode {
+  id        String     @id @default(cuid())
+  email     String
+  code      String     // 6자리 숫자
+  type      String     // "signup", "login", "password-reset"
+  used      Boolean    @default(false)
+  usedAt    DateTime?
+  expiresAt DateTime   // 10분 후
+  createdAt DateTime   @default(now())
+
+  @@unique([email, type, used])
+  @@index([email, expiresAt])
+}
+
+// 사진 검증 (얼굴 인식)
+model PhotoVerification {
+  id        String     @id @default(cuid())
+  userId    String
+  photoUrl  String
+  verified  Boolean    @default(false)
+  faceData  String?    // JSON: { confidence, landmarks }
+  error     String?    // 검증 실패 이유
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// 사용자 신고
+model Report {
+  id        String     @id @default(cuid())
+  reporterId String
+  reportedUserId String
+  reason    String     // "spam", "inappropriate", "scam", "abuse"
+  description String?  // 상세 설명
+  status    String     @default("pending") // pending, investigating, resolved, dismissed
+  action    String?    // 취한 조치: "suspended", "blocked", "warned"
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  reporter User @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser User @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([reporterId, reportedUserId, reason])
+  @@index([reportedUserId, status])
+}
+
+// 사용자 차단
+model Notification {
+  id        String     @id @default(cuid())
+  userId    String
+  type      String     // "like", "match", "message", "system"
+  title     String
+  body      String
+  data      String?    // JSON 데이터
+  isRead    Boolean    @default(false)
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model BlockedUser {
+  id        String     @id @default(cuid())
+  blockerId String
+  blockedId String
+  reason    String?
+  createdAt DateTime   @default(now())
+
+  blocker User @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+}
+
+// 로그인 시도 추적
+model LoginAttempt {
+  id        String     @id @default(cuid())
+  email     String
+  ipAddress String?
+  userAgent String?
+  success   Boolean    @default(false)
+  reason    String?    // 실패 이유: "invalid_password", "user_not_found", "account_locked", etc.
+  createdAt DateTime   @default(now())
+
+  @@index([email, createdAt])
+  @@index([ipAddress, createdAt])
+}
+
+// Priority 4: 선물/팁 시스템
+model Gift {
+  id          String     @id @default(cuid())
+  senderId    String
+  recipientId String
+  giftType    String     // "rose", "diamond", "heart", "kiss", etc.
+  amount      Int        @default(1)
+  message     String?    // 선물과 함께 보내는 메시지
+  isRead      Boolean    @default(false)
+  readAt      DateTime?
+  createdAt   DateTime   @default(now())
+
+  sender    User @relation("GiftSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("GiftRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+// Priority 4: 푸시 알림 토큰
+model PushToken {
+  id        String     @id @default(cuid())
+  userId    String
+  token     String     @unique
+  deviceType String    // "ios", "android", "web"
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user User @relation("PushTokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// 파일 공유 시스템
+model FileUpload {
+  id             String     @id @default(cuid())
+  uploaderId     String
+  fileName       String
+  originalName   String     // 원본 파일명
+  fileType       String     // "image", "video", "audio", "document", etc.
+  mimeType       String     // "image/jpeg", "video/mp4", etc.
+  fileSize       Int        // bytes
+  fileUrl        String     // S3/CDN URL
+  thumbnailUrl   String?    // 이미지/비디오 썸네일
+  duration       Int?       // 비디오 길이 (초)
+  width          Int?       // 이미지/비디오 너비
+  height         Int?       // 이미지/비디오 높이
+  s3Key          String     // S3 버킷 키
+  uploadStatus   String     @default("completed") // pending, uploading, completed, failed
+  uploadedAt     DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  uploader User @relation("FileUploads", fields: [uploaderId], references: [id], onDelete: Cascade)
+  messageAttachments MessageAttachment[]
+
+  @@index([uploaderId])
+  @@index([uploadedAt])
+  @@index([fileType])
+}
+
+// Priority 4: 메시지 첨부파일
+model MessageAttachment {
+  id           String     @id @default(cuid())
+  messageId    String
+  fileUploadId String     // FileUpload 테이블 참조
+  displayOrder Int        @default(0) // 표시 순서
+  createdAt    DateTime   @default(now())
+
+  file FileUpload @relation(fields: [fileUploadId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@index([fileUploadId])
+  @@unique([messageId, fileUploadId])
+}
+
+// Priority 4: 사용자 위치
+model UserLocation {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  latitude  Float
+  longitude Float
+  region    String?
+  updatedAt DateTime   @updatedAt
+
+  user User @relation("UserLocation", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([latitude, longitude])
+}
+
+// Priority 4: 프리미엄 구독 플랜
+model SubscriptionPlan {
+  id        String     @id @default(cuid())
+  name      String     @unique // "basic", "plus", "premium"
+  price     Int        // 월간 가격 (원)
+  duration  Int        @default(30) // 일수
+  features  String     // JSON array of features
+  createdAt DateTime   @default(now())
+
+  subscriptions Subscription[]
+}
+
+// Priority 4: 사용자 구독
+model Subscription {
+  id        String     @id @default(cuid())
+  userId    String
+  planId    String
+  status    String     @default("active") // active, cancelled, expired
+  startDate DateTime   @default(now())
+  endDate   DateTime
+  cancelledAt DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user User @relation("Subscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  plan SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([status])
+  @@index([endDate])
+}
+
+// Priority 4: 사용자 분석
+model UserAnalytics {
+  id        String     @id @default(cuid())
+  userId    String
+  date      DateTime   // 날짜 (년-월-일)
+  viewCount Int        @default(0)
+  likeCount Int        @default(0)
+  messageCount Int     @default(0)
+  matchCount Int       @default(0)
+  giftCount  Int       @default(0)
+  createdAt DateTime   @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+// Priority 4: 채팅 방 (그룹 채팅)
+model ChatRoom {
+  id        String     @id @default(cuid())
+  name      String?
+  type      String     @default("direct") // direct, group
+  creatorId String
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  members ChatRoomMember[]
+  groupMessages GroupMessage[]
+
+  @@index([type])
+  @@index([createdAt])
+}
+
+// Priority 4: 채팅 방 멤버
+model ChatRoomMember {
+  id        String     @id @default(cuid())
+  roomId    String
+  userId    String
+  joinedAt  DateTime   @default(now())
+  leftAt    DateTime?
+
+  room ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user User @relation("ChatRoomMembers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@index([roomId])
+  @@index([userId])
+}
+
+// Priority 4: 그룹 메시지
+model GroupMessage {
+  id        String     @id @default(cuid())
+  roomId    String
+  senderId  String
+  content   String
+  imageUrl  String?
+  isRead    Boolean    @default(false)
+  createdAt DateTime   @default(now())
+
+  room ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@index([createdAt])
+}
+
+// Priority 5: 결제 시스템
+model Payment {
+  id              String     @id @default(cuid())
+  userId          String
+  amount          Int        // 결제 금액 (원)
+  currency        String     @default("KRW")
+  status          String     @default("pending") // pending, completed, failed, refunded
+  paymentMethod   String     // "card", "paypal", "bank_transfer"
+  transactionId   String?    // 결제 게이트웨이 ID
+  reason          String     // "subscription", "gift", "points", etc.
+  relatedId       String?    // 관련 ID (구독 ID 등)
+  createdAt       DateTime   @default(now())
+  completedAt     DateTime?
+
+  user User @relation("Payments", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Priority 5: 포인트 시스템
+model PointHistory {
+  id        String     @id @default(cuid())
+  userId    String
+  amount    Int        // 포인트 수량 (음수 가능)
+  reason    String     // "like", "match", "login", "gift", "payment", etc.
+  relatedId String?    // 관련 ID
+  createdAt DateTime   @default(now())
+
+  user User @relation("PointHistory", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Priority 5: 배지
+model Badge {
+  id          String     @id @default(cuid())
+  name        String     @unique // "popular", "active", "matchmaker", etc.
+  description String
+  icon        String     // 이모지 또는 아이콘 URL
+  requirement String     // 배지 획득 조건 설명
+  createdAt   DateTime   @default(now())
+
+  userBadges UserBadge[]
+}
+
+// Priority 5: 사용자 배지
+model UserBadge {
+  id        String     @id @default(cuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime   @default(now())
+
+  user User @relation("UserBadges", fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+}
+
+// Priority 5: 사용자 사진 갤러리
+model UserPhoto {
+  id        String     @id @default(cuid())
+  userId    String
+  photoUrl  String
+  order     Int        @default(0) // 정렬 순서
+  isMain    Boolean    @default(false)
+  uploadedAt DateTime  @default(now())
+
+  user User @relation("UserPhotos", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Priority 5: 검색 선호도
+model SearchPreference {
+  id              String     @id @default(cuid())
+  userId          String     @unique
+  minAge          Int?
+  maxAge          Int?
+  preferredRegion String?
+  preferredMbti   String?    // JSON array
+  minHeight       Int?
+  maxHeight       Int?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  user User @relation("SearchPreference", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Priority 5: 통화 세션
+model CallSession {
+  id          String     @id @default(cuid())
+  callerId    String
+  calleeId    String
+  callType    String     // "voice", "video"
+  status      String     @default("pending") // pending, active, ended, declined, missed
+  startTime   DateTime?
+  endTime     DateTime?
+  duration    Int?       // 초단위
+  createdAt   DateTime   @default(now())
+
+  caller User @relation("OutgoingCalls", fields: [callerId], references: [id], onDelete: Cascade)
+  callee User @relation("IncomingCalls", fields: [calleeId], references: [id], onDelete: Cascade)
+
+  @@index([callerId])
+  @@index([calleeId])
+  @@index([createdAt])
+}
+
+// Priority 5: 이벤트/파티
+model Event {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  location    String
+  latitude    Float?
+  longitude   Float?
+  eventDate   DateTime
+  capacity    Int?
+  creatorId   String
+  status      String     @default("upcoming") // upcoming, ongoing, ended, cancelled
+  coverImage  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  creator User @relation("CreatedEvents", fields: [creatorId], references: [id], onDelete: Cascade)
+  participants EventParticipant[]
+
+  @@index([creatorId])
+  @@index([eventDate])
+  @@index([location])
+}
+
+// Priority 5: 이벤트 참가자
+model EventParticipant {
+  id        String     @id @default(cuid())
+  eventId   String
+  userId    String
+  status    String     @default("registered") // registered, joined, left, declined
+  joinedAt  DateTime?
+  createdAt DateTime   @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user User @relation("EventParticipants", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+// 온라인 상태 추적
+model OnlineStatus {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  isOnline  Boolean    @default(false)
+  lastSeen  DateTime   @default(now())
+  socketId  String?    // 현재 WebSocket 연결 ID
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([isOnline])
+  @@index([lastSeen])
+}
+
+// 배달되지 않은 메시지 큐
+model UndeliveredMessage {
+  id           String     @id @default(cuid())
+  senderId     String
+  recipientId  String
+  messageId    String     @unique  // 원본 Message 테이블의 ID 참조
+  content      String
+  queuedAt     DateTime   @default(now())
+  deliveredAt  DateTime?
+  isDelivered  Boolean    @default(false)
+  deliveryAttempts Int    @default(0)
+  lastAttemptAt DateTime?
+  error        String?    // 배달 실패 이유
+
+  @@index([recipientId])
+  @@index([isDelivered])
+  @@index([queuedAt])
+  @@index([recipientId, isDelivered])
+}
+
+// 배달되지 않은 그룹 메시지
+model UndeliveredGroupMessage {
+  id          String     @id @default(cuid())
+  roomId      String
+  userId      String
+  groupMessageId String @unique  // 원본 GroupMessage 테이블의 ID 참조
+  content     String
+  senderName  String
+  queuedAt    DateTime   @default(now())
+  deliveredAt DateTime?
+  isDelivered Boolean    @default(false)
+  deliveryAttempts Int   @default(0)
+  lastAttemptAt DateTime?
+  error       String?
+
+  @@index([userId])
+  @@index([isDelivered])
+  @@index([queuedAt])
+  @@index([userId, isDelivered])
+}

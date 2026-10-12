@@ -1,0 +1,27 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 패키지 설치
+COPY package*.json ./
+RUN npm ci
+
+# 프로덕션 종속성만 필요한 경우
+# RUN npm ci --only=production && npm install redis @socket.io/redis-adapter
+
+# 소스 코드 복사
+COPY . .
+
+# 포트 노출
+EXPOSE 3001
+
+# 환경 변수
+ENV NODE_ENV=production
+ENV WEBSOCKET_PORT=3001
+
+# 헬스 체크 (WebSocket 포트)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('net').createConnection({port: 3001}, (s) => {s.destroy(); process.exit(0)}).on('error', () => process.exit(1))"
+
+# 시작 명령
+CMD ["node", "websocket-server.js"]

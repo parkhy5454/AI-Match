@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/*"],
+      "@/app/*": ["./app/*"],
+      "@/components/*": ["./app/components/*", "./components/*"],
+      "@/components/TopNav": ["./components/TopNav"],
+      "@/components/BottomNav": ["./components/BottomNav"],
+      "@/components/PasswordPolicyValidator": ["./components/PasswordPolicyValidator"],
+      "@/lib/*": ["./lib/*"],
+      "@/lib/db": ["./lib/db.ts"],
+      "@/lib/prisma": ["./lib/db.ts"],
+      "@/app/lib/prisma": ["./lib/db.ts"],
+      "@/sentry.client.config": ["./sentry.client.config.ts"],
+      "@/sentry.server.config": ["./sentry.server.config.ts"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "__tests__/**/*",
+    "tests/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Match - 오프라인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'system-ui', '-apple-system', 'sans-serif';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .message {
+            background: #f0f0f0;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:active {
+            background: #e0e0e0;
+        }
+
+        .status-indicator {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📡</div>
+        <h1>인터넷 연결 필요</h1>
+        <p class="subtitle">현재 오프라인 상태입니다</p>
+
+        <div class="message">
+            <strong>💡 팁:</strong> 인터넷 연결을 확인하고 다시 시도해주세요. 일부 콘텐츠는 오프라인에서도 사용 가능할 수 있습니다.
+        </div>
+
+        <div class="buttons">
+            <button class="btn-primary" onclick="location.reload()">
+                🔄 다시 시도
+            </button>
+            <button class="btn-secondary" onclick="goHome()">
+                🏠 홈으로
+            </button>
+        </div>
+
+        <div class="status-indicator">
+            <span class="dot"></span>
+            <span id="connection-status">오프라인 상태</span>
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connection-status');
+            if (navigator.onLine) {
+                statusElement.textContent = '온라인 연결됨';
+                statusElement.style.color = '#4CAF50';
+                document.querySelector('.dot').style.background = '#4CAF50';
+                // Redirect to home if connection is restored
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                statusElement.textContent = '오프라인 상태';
+                statusElement.style.color = '#ff6b6b';
+            }
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial status check
+        updateConnectionStatus();
+
+        function goHome() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

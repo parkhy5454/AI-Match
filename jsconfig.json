@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/*"],
+      "@/app/*": ["./app/*"],
+      "@/components/*": ["./app/components/*", "./components/*"],
+      "@/components/TopNav": ["./components/TopNav"],
+      "@/components/BottomNav": ["./components/BottomNav"],
+      "@/components/PasswordPolicyValidator": ["./components/PasswordPolicyValidator"],
+      "@/lib/*": ["./lib/*"],
+      "@/lib/prisma": ["./lib/db.ts"],
+      "@/app/lib/prisma": ["./lib/db.ts"],
+      "@/sentry.client.config": ["./sentry.client.config.ts"],
+      "@/sentry.server.config": ["./sentry.server.config.ts"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules"]
+}

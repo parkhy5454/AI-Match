@@ -1,0 +1,86 @@
+
+.container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty {
+  color: #999;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.info {
+  flex: 1;
+}
+
+.info h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.details {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.message {
+  font-size: 13px;
+  color: #555;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.date {
+  font-size: 11px;
+  color: #999;
+}
+
+.actionBtn {
+  padding: 8px 16px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.actionBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

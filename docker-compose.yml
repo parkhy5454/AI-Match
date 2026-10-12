@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 데이터베이스
+  postgres:
+    image: postgres:16-alpine
+    container_name: ai-match-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ai_match
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai-match-network
+    restart: unless-stopped
+
+  # Redis (선택사항)
+  redis:
+    image: redis:7-alpine
+    container_name: ai-match-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai-match-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Next.js 웹 애플리케이션
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-match-web
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-password}@postgres:5432/ai_match
+      NEXT_PUBLIC_WEBSOCKET_URL: ${WEBSOCKET_URL:-ws://localhost:3001}
+      NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+      RESET_TOKEN_SECRET: ${RESET_TOKEN_SECRET:-your-reset-secret}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL:-noreply@example.com}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ai-match-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # WebSocket 서버
+  websocket:
+    build:
+      context: .
+      dockerfile: Dockerfile.websocket
+    container_name: ai-match-websocket
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-password}@postgres:5432/ai_match
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      WEBSOCKET_PORT: 3001
+      NEXT_PUBLIC_API_URL: ${APP_URL:-http://localhost:3000}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ai-match-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').createConnection({port: 3001}).destroy()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  ai-match-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

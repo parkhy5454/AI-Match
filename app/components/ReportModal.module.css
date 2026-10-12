@@ -1,0 +1,122 @@
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+
+.form {
+  padding: 20px;
+}
+
+.group {
+  margin-bottom: 15px;
+}
+
+.group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+}
+
+.group select,
+.group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.group textarea {
+  resize: vertical;
+}
+
+.successMessage {
+  padding: 40px 20px;
+  text-align: center;
+  color: #4caf50;
+}
+
+.successMessage p {
+  margin: 10px 0;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.cancelBtn,
+.submitBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cancelBtn:hover {
+  background: #d0d0d0;
+}
+
+.submitBtn {
+  background: #f44336;
+  color: white;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

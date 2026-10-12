@@ -1,0 +1,2 @@
+-- Placeholder migration
+-- Columns notificationsEnabled and isPrivate already exist

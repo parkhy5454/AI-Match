@@ -1,0 +1,264 @@
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.incomingCall,
+.connecting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.recipientImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+}
+
+.incomingCall h2,
+.connecting h2 {
+  font-size: 28px;
+  color: #fff;
+  margin: 0;
+}
+
+.incomingCall p,
+.connecting p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.acceptBtn,
+.rejectBtn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.acceptBtn {
+  background: #4caf50;
+  color: white;
+}
+
+.acceptBtn:hover {
+  background: #45a049;
+  transform: scale(1.1);
+}
+
+.rejectBtn {
+  background: #f44336;
+  color: white;
+}
+
+.rejectBtn:hover {
+  background: #da190b;
+  transform: scale(1.1);
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remoteVideo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.remoteVideo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.localVideo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 180px;
+  height: 240px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  background: #000;
+}
+
+.localVideo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.duration {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.controls {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
+
+.controlBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.controlBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.controlBtn.active {
+  background: rgba(244, 67, 54, 0.6);
+}
+
+.endBtn {
+  background: rgba(244, 67, 54, 0.8);
+  width: 56px;
+  height: 56px;
+}
+
+.endBtn:hover {
+  background: rgba(244, 67, 54, 1);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .recipientImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .incomingCall h2,
+  .connecting h2 {
+    font-size: 24px;
+  }
+
+  .localVideo {
+    width: 120px;
+    height: 160px;
+    bottom: 80px;
+    right: 10px;
+  }
+
+  .controls {
+    bottom: 20px;
+    gap: 10px;
+  }
+
+  .controlBtn {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .endBtn {
+    width: 50px;
+    height: 50px;
+  }
+}
