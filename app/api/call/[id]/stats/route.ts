@@ -127,16 +127,21 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     })
 
     // 적응형 비트레이트 조정
-    const totalBandwidth = body.videoBitrate + body.audioBitrate
-    const adaptiveBitrate = getAdaptiveBitrate(
-      totalBandwidth,
-      quality.quality
-    )
+    const adaptiveBitrate = getAdaptiveBitrate({
+      videoBitrate: body.videoBitrate,
+      audioBitrate: body.audioBitrate,
+      frameRate: body.frameRate,
+      resolution: body.resolution,
+      packetLoss: body.packetLoss,
+      latency: body.latency,
+      jitter: body.jitter,
+      audioLevel: body.audioLevel,
+    })
 
     logger.info('통화 통계 기록', {
       callId,
       userId,
-      quality: quality.quality,
+      quality: quality.rating,
       bitrate: body.videoBitrate,
       latency: body.latency,
     })
