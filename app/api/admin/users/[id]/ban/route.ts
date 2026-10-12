@@ -72,7 +72,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    await banUser(targetUserId)
+    await banUser(targetUserId, body.reason)
 
     // 감사 로그
     await db.execute(`
