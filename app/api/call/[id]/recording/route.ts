@@ -100,11 +100,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     const body: StopRecordingRequest = await request.json()
 
-    const recording = await stopRecording(
-      body.recordingId,
-      body.fileSize,
-      body.duration
-    )
+    await stopRecording(params.id)
 
     logger.info('통화 녹음 종료', {
       callId: params.id,
@@ -116,7 +112,6 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({
       success: true,
-      data: recording,
       message: '통화 녹음이 종료되었습니다',
     })
   } catch (error) {
