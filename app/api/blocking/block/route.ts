@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const decoded = verifyJWT(token)
+    const decoded = verifyJWT(token) as any
     if (!decoded || !decoded.sub) {
       return NextResponse.json(
         { error: '유효하지 않은 토큰입니다' },
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const userId = decoded.sub
+    const userId = (decoded.sub as string)
     const { blockedUserId, reason } = await request.json()
 
     if (!blockedUserId) {
@@ -94,7 +94,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const decoded = verifyJWT(token)
+    const decoded = verifyJWT(token) as any
     if (!decoded || !decoded.sub) {
       return NextResponse.json(
         { error: '유효하지 않은 토큰입니다' },
@@ -102,7 +102,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const userId = decoded.sub
+    const userId = (decoded.sub as string)
     const { blockedUserId } = await request.json()
 
     if (!blockedUserId) {
