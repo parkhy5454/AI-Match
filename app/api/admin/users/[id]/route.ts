@@ -69,14 +69,14 @@ export async function PUT(
         );
       }
       await suspendUser(params.id, reason, durationDays || 7);
-      await logAdminAction(adminId, 'SUSPEND_USER', {
+      await logAdminAction(adminId.id, 'SUSPEND_USER', {
         targetUserId: params.id,
         reason,
         durationDays: durationDays || 7,
       });
     } else if (action === 'unsuspend') {
       await unsuspendUser(params.id);
-      await logAdminAction(adminId, 'UNSUSPEND_USER', {
+      await logAdminAction(adminId.id, 'UNSUSPEND_USER', {
         targetUserId: params.id,
       });
     } else if (action === 'ban') {
@@ -87,7 +87,7 @@ export async function PUT(
         );
       }
       await banUser(params.id, reason);
-      await logAdminAction(adminId, 'BAN_USER', {
+      await logAdminAction(adminId.id, 'BAN_USER', {
         targetUserId: params.id,
         reason,
       });
