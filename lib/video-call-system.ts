@@ -375,7 +375,7 @@ export async function getCallDetails(callId: string): Promise<VideoCall | null> 
 /**
  * Calculate call quality rating
  */
-export function evaluateCallQuality(metrics: CallStatistics): {
+export function evaluateCallQuality(metrics: CallQualityMetrics): {
   rating: number;
   label: string;
   issues: string[];
