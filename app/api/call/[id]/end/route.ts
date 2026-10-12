@@ -53,7 +53,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '통화가 종료되었습니다',
     })
   } catch (error) {
-    logger.error('통화 종료 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('통화 종료 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

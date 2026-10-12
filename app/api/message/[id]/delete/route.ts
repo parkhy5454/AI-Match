@@ -48,7 +48,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '메시지가 삭제되었습니다',
     })
   } catch (error) {
-    logger.error('메시지 삭제 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('메시지 삭제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

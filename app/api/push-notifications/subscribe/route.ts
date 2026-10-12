@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    logger.error('푸시 토큰 등록 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('푸시 토큰 등록 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -154,7 +154,7 @@ export async function DELETE(request: NextRequest) {
       message: '디바이스 토큰이 삭제되었습니다',
     })
   } catch (error) {
-    logger.error('푸시 토큰 삭제 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('푸시 토큰 삭제 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

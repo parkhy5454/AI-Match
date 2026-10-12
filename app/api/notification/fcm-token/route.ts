@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       message: 'FCM 토큰이 저장되었습니다',
     })
   } catch (error) {
-    logger.error('FCM 토큰 저장 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('FCM 토큰 저장 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: 'FCM 토큰 저장에 실패했습니다' },
@@ -112,7 +112,7 @@ export async function DELETE(request: NextRequest) {
       message: 'FCM 토큰이 삭제되었습니다',
     })
   } catch (error) {
-    logger.error('FCM 토큰 삭제 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('FCM 토큰 삭제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: 'FCM 토큰 삭제에 실패했습니다' },

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       data: result,
     })
   } catch (error) {
-    logger.error('환불 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('환불 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: '환불 처리에 실패했습니다' },

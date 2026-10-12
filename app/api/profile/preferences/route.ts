@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       data: preferences
     })
   } catch (error) {
-    logger.error('프로필 선호도 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('프로필 선호도 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -96,7 +96,7 @@ export async function PUT(request: NextRequest) {
       message: '프로필 선호도가 업데이트되었습니다'
     })
   } catch (error) {
-    logger.error('프로필 선호도 업데이트 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('프로필 선호도 업데이트 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

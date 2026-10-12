@@ -42,7 +42,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       data: profile
     })
   } catch (error) {
-    logger.error('공개 프로필 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('공개 프로필 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       data: verification,
     })
   } catch (error) {
-    logger.error('신원 인증 상태 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('신원 인증 상태 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: '상태 조회에 실패했습니다' },
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       message: '신원 검증 요청이 제출되었습니다. 관리자 검토 후 결과를 알려드리겠습니다.',
     })
   } catch (error) {
-    logger.error('신원 검증 이미지 업로드 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('신원 검증 이미지 업로드 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

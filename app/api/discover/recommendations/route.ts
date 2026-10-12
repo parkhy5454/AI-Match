@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
       message: '추천 사용자 조회 성공',
     })
   } catch (error) {
-    logger.error('매칭 추천 조회 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('매칭 추천 조회 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

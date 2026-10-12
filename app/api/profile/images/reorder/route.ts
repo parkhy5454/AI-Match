@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       message: '이미지 순서가 변경되었습니다',
     })
   } catch (error) {
-    logger.error('프로필 이미지 순서 변경 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('프로필 이미지 순서 변경 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

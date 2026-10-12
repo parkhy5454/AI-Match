@@ -60,7 +60,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message,
     })
   } catch (error) {
-    logger.error('통화 응답 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('통화 응답 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

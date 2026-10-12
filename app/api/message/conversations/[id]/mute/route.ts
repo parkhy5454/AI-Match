@@ -49,7 +49,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '대화를 뮤트했습니다',
     })
   } catch (error) {
-    logger.error('대화 뮤트 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('대화 뮤트 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -96,7 +96,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '대화 뮤트를 해제했습니다',
     })
   } catch (error) {
-    logger.error('대화 뮤트 해제 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('대화 뮤트 해제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

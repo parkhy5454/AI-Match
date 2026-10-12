@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       message: '메시지 조회 성공',
     })
   } catch (error) {
-    logger.error('메시지 이력 조회 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('메시지 이력 조회 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

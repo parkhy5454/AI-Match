@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       message: '사진이 업로드되었습니다'
     })
   } catch (error) {
-    logger.error('사진 업로드 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('사진 업로드 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
       data: photos
     })
   } catch (error) {
-    logger.error('사진 목록 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('사진 목록 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -169,7 +169,7 @@ export async function PUT(request: NextRequest) {
       message: '사진 순서가 변경되었습니다'
     })
   } catch (error) {
-    logger.error('사진 순서 변경 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('사진 순서 변경 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -224,7 +224,7 @@ export async function DELETE(request: NextRequest) {
       message: '사진이 삭제되었습니다'
     })
   } catch (error) {
-    logger.error('사진 삭제 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('사진 삭제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {

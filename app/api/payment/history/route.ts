@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       data: result,
     })
   } catch (error) {
-    logger.error('결제 내역 조회 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('결제 내역 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: '결제 내역 조회에 실패했습니다' },

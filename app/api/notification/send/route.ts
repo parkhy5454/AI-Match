@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       message: '알림이 전송되었습니다',
     })
   } catch (error) {
-    logger.error('알림 전송 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('알림 전송 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: '알림 전송에 실패했습니다' },

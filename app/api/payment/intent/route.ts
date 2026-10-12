@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       data: result,
     })
   } catch (error) {
-    logger.error('결제 의도 생성 API 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('결제 의도 생성 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { success: false, error: '결제 의도 생성에 실패했습니다' },

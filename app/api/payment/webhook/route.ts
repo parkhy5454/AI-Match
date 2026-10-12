@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     try {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
     } catch (error) {
-      logger.error('웹훅 서명 검증 실패', error instanceof Error ? error : new Error(String(error))))
+      logger.error('웹훅 서명 검증 실패', error instanceof Error ? error : new Error(String(error)))
       return NextResponse.json(
         { error: '서명 검증 실패' },
         { status: 400 }
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    logger.error('웹훅 처리 오류', error instanceof Error ? error : new Error(String(error))))
+    logger.error('웹훅 처리 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { error: '웹훅 처리 실패' },

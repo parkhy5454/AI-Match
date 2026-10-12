@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
       message: isMatch ? '매칭되었습니다!' : '좋아요를 했습니다',
     })
   } catch (error) {
-    logger.error('좋아요 추가 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('좋아요 추가 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -228,7 +228,7 @@ export async function DELETE(request: NextRequest) {
       message: '좋아요를 취소했습니다',
     })
   } catch (error) {
-    logger.error('좋아요 취소 실패', error instanceof Error ? error : new Error(String(error))))
+    logger.error('좋아요 취소 실패', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
