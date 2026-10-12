@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const decoded = verifyJWT(token)
+    const decoded = verifyJWT(token) as any
     if (!decoded || !decoded.sub) {
       return NextResponse.json(
         { error: '유효하지 않은 토큰입니다' },
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const userId = decoded.sub
+    const userId = (decoded.sub as string)
     const searchParams = request.nextUrl.searchParams
     const type = searchParams.get('type') || 'blocked' // 'blocked' 또는 'blockers'
     const limit = Math.min(
@@ -83,9 +83,7 @@ export async function GET(request: NextRequest) {
       )
     }
   } catch (error) {
-    logger.error('차단 목록 조회 API 오류', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('차단 목록 조회 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       { error: '목록 조회 중 오류가 발생했습니다' },
