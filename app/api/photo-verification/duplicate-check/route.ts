@@ -23,13 +23,14 @@ export async function POST(request: NextRequest) {
   try {
     // 인증 확인
     const user = await verifyAuth(request)
-    if (!user) {
+    if (!user?.id) {
       return NextResponse.json(
         { success: false, error: '인증이 필요합니다' },
         { status: 401 }
       )
     }
 
+    const { id: userId } = user
     const body = await request.json()
     const { photoUrl } = body
 
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     // 현재 사용자의 이전 검증 기록 확인
     const userVerifications = await db.photoVerification.findMany({
-      where: { userId: user.id },
+      where: { userId },
       select: { photoUrl: true, verified: true, createdAt: true },
     })
 
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
       canVerify = false
 
       logger.logSecurity('Duplicate photo attempt detected', {
-        userId: user.id,
+        userId,
         previousUser: samePhotoByOthers[0].userId,
       })
     }
