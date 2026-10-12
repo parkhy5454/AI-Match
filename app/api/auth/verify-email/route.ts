@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
     }
 
     // 토큰 검증
-    const decoded = verifyResetToken(token);
+    const decoded = verifyResetToken(token) as any;
     if (!decoded || !decoded.email) {
       return NextResponse.json(
         { error: "유효하지 않거나 만료된 토큰입니다" },
