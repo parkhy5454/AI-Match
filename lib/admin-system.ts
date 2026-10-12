@@ -28,6 +28,7 @@ export interface UserManagementData {
   profileCompleteness: number;
   totalMatches: number;
   totalReports: number;
+  role?: string;
 }
 
 export interface AdminLog {
@@ -218,6 +219,7 @@ export async function getUserDetails(userId: string): Promise<UserManagementData
       suspendedUntil: true,
       lastActiveAt: true,
       profileCompleteness: true,
+      role: true,
     },
   });
 
