@@ -8,6 +8,7 @@ import { verifyJWT } from '@/lib/auth'
 import { getBlockedUsers } from '@/lib/blocking-reporting-system'
 import { getBlockers } from '@/lib/blocking-system'
 import { logger } from '@/lib/logging'
+import { db } from '@/lib/db'
 
 /**
  * GET /api/blocking/blocked?type=blocked&limit=50&offset=0
@@ -41,21 +42,29 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0') || 0
 
     if (type === 'blocked') {
-      const result = await getBlockedUsers(userId, limit, offset)
+      const [blockedUsers, total] = await Promise.all([
+        getBlockedUsers(userId, limit, offset),
+        db.userBlock.count({
+          where: {
+            blockerId: userId,
+            status: 'active',
+          },
+        }),
+      ])
 
       logger.info('차단된 사용자 목록 조회 성공', {
         userId,
-        count: result.blocks.length,
+        count: blockedUsers.length,
       })
 
       return NextResponse.json({
         success: true,
-        data: result.blocks,
+        data: blockedUsers,
         pagination: {
-          total: result.total,
-          limit: result.limit,
-          offset: result.offset,
-          hasMore: offset + limit < result.total,
+          total,
+          limit,
+          offset,
+          hasMore: offset + limit < total,
         },
       })
     } else if (type === 'blockers') {
