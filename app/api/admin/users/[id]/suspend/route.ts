@@ -32,7 +32,14 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const userId = verifyToken(token)
+    const payload = verifyToken(token) as any
+    if (!payload) {
+      return NextResponse.json(
+        { success: false, error: '유효하지 않은 토큰입니다' },
+        { status: 401 }
+      )
+    }
+    const userId = payload.userId
     if (!userId) {
       return NextResponse.json(
         { success: false, error: '유효하지 않은 토큰입니다' },
@@ -88,10 +95,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: `사용자가 ${durationHours}시간 동안 정지되었습니다`,
     })
   } catch (error) {
-    logger.error('사용자 정지 API 오류', {
-      userId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 정지 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
@@ -115,7 +119,14 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const userId = verifyToken(token)
+    const payload = verifyToken(token) as any
+    if (!payload) {
+      return NextResponse.json(
+        { success: false, error: '유효하지 않은 토큰입니다' },
+        { status: 401 }
+      )
+    }
+    const userId = payload.userId
     if (!userId) {
       return NextResponse.json(
         { success: false, error: '유효하지 않은 토큰입니다' },
