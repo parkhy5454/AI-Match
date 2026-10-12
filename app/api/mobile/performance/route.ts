@@ -11,7 +11,7 @@ import {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { deviceId, ...metrics } = await req.json();
 
     if (!deviceId) {
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const deviceId = req.nextUrl.searchParams.get('deviceId');
     const daysBack = parseInt(req.nextUrl.searchParams.get('daysBack') || '7');
 

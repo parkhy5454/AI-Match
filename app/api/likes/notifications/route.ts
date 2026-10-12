@@ -11,7 +11,7 @@ import {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '50');
 
     const notifications = await getMatchNotifications(userId, limit);
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { notificationId } = await req.json();
 
     if (!notificationId) {

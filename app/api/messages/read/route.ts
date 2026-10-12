@@ -11,7 +11,7 @@ import {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { messageId, senderId } = await req.json();
 
     if (!messageId && !senderId) {

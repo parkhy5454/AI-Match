@@ -8,7 +8,7 @@ import { syncMessages } from '@/lib/realtime-messaging-system';
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { lastSyncTimestamp } = await req.json();
 
     if (!lastSyncTimestamp) {

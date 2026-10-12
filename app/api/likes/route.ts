@@ -12,7 +12,7 @@ import {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const type = req.nextUrl.searchParams.get('type') || 'received';
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '50');
     const offset = parseInt(req.nextUrl.searchParams.get('offset') || '0');

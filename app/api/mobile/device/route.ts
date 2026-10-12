@@ -8,7 +8,7 @@ import { registerDevice, type DeviceInfo } from '@/lib/mobile-optimization-syste
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const deviceData = await req.json();
 
     if (!deviceData.deviceId) {

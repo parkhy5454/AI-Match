@@ -12,7 +12,7 @@ import {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { deviceId } = await req.json();
 
     if (!deviceId) {
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const unsynced = await getUnsyncedData(userId);
 
     return NextResponse.json({

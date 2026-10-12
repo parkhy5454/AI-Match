@@ -8,7 +8,7 @@ import { getMessageStatistics } from '@/lib/realtime-messaging-system';
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
 
     const stats = await getMessageStatistics(userId);
 

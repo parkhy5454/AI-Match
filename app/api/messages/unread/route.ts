@@ -11,7 +11,7 @@ import {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '50');
     const countOnly = req.nextUrl.searchParams.get('countOnly') === 'true';
 

@@ -8,7 +8,7 @@ import { initiateVideoCall, type CallType } from '@/lib/video-call-system';
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { recipientId, callType = 'video' } = await req.json();
 
     if (!recipientId) {

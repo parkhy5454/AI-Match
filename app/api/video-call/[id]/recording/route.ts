@@ -7,7 +7,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { fileName, fileSize, duration, format, bitrate, resolution } = await req.json();
 
     const recording = await createCallRecording(

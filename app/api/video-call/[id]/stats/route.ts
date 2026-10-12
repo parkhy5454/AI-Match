@@ -7,7 +7,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { videoBitrate, audioBitrate, frameRate, resolution, packetLoss, latency, jitter, audioLevel } = await req.json();
 
     // Stats recording would be done here

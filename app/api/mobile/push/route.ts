@@ -8,7 +8,7 @@ import { updatePushPreferences } from '@/lib/mobile-optimization-system';
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const preferences = await req.json();
 
     const updated = await updatePushPreferences(userId, preferences);

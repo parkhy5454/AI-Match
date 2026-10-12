@@ -8,7 +8,7 @@ import { checkIfUserLiked } from '@/lib/like-match-system';
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const toUserId = req.nextUrl.searchParams.get('toUserId');
 
     if (!toUserId) {

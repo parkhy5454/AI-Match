@@ -12,7 +12,7 @@ import {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { action, targetUserId, reason, details } = await req.json();
 
     if (!action || !targetUserId) {

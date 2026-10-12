@@ -13,7 +13,7 @@ import {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '20');
     const offset = parseInt(req.nextUrl.searchParams.get('offset') || '0');
 
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { partnerId, action, muteDurationMinutes } = await req.json();
 
     if (!partnerId || !action) {

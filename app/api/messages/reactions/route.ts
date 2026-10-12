@@ -12,7 +12,7 @@ import {
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { messageId, reaction } = await req.json();
 
     if (!messageId || !reaction) {
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
  */
 export async function DELETE(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { messageId, reaction } = await req.json();
 
     if (!messageId || !reaction) {

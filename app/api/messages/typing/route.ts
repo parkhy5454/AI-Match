@@ -8,7 +8,7 @@ import { setTypingIndicator } from '@/lib/realtime-messaging-system';
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { recipientId, isTyping } = await req.json();
 
     if (!recipientId) {

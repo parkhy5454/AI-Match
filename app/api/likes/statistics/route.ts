@@ -12,7 +12,7 @@ import {
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const type = req.nextUrl.searchParams.get('type') || 'general';
 
     let result;

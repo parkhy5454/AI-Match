@@ -8,7 +8,7 @@ import { sendLike, sendPass } from '@/lib/like-match-system';
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const { toUserId, action } = await req.json();
 
     if (!toUserId || !action) {

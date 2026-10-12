@@ -8,7 +8,7 @@ import { getTrendingProfiles } from '@/lib/search-recommendation-system';
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '10');
     const offset = parseInt(req.nextUrl.searchParams.get('offset') || '0');
 

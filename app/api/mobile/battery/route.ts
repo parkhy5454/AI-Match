@@ -8,7 +8,7 @@ import { getBatteryOptimizationTips } from '@/lib/mobile-optimization-system';
  */
 export async function GET(req: NextRequest) {
   try {
-    const userId = await verifyAuth(req);
+    const { id: userId } = await verifyAuth(req);
     const deviceId = req.nextUrl.searchParams.get('deviceId');
 
     if (!deviceId) {
