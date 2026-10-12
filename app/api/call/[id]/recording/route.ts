@@ -35,7 +35,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const userId = verifyToken(token)
+    const payload = verifyToken(token) as any
+    if (!payload) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const userId = payload.userId
     if (!userId) {
       return NextResponse.json(
         { success: false, error: '유효하지 않은 토큰입니다' },
@@ -85,7 +89,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const userId = verifyToken(token)
+    const payload = verifyToken(token) as any
+    if (!payload) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const userId = payload.userId
     if (!userId) {
       return NextResponse.json(
         { success: false, error: '유효하지 않은 토큰입니다' },
