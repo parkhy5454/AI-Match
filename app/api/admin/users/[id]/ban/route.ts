@@ -99,10 +99,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: '사용자가 영구적으로 차단되었습니다',
     })
   } catch (error) {
-    logger.error('사용자 차단 API 오류', {
-      userId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 차단 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
