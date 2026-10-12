@@ -174,10 +174,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       message: '사용자 정지가 해제되었습니다',
     })
   } catch (error) {
-    logger.error('사용자 정지 해제 API 오류', {
-      userId: params.id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    })
+    logger.error('사용자 정지 해제 API 오류', error instanceof Error ? error : new Error(String(error)))
 
     return NextResponse.json(
       {
